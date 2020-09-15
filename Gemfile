@@ -6,6 +6,9 @@ ruby '2.7.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+# Use Postgresql
+gem 'pg'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
@@ -14,9 +17,6 @@ gem 'rack-cors'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
-
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
