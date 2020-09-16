@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
   before_action :check_existence, only: %i[create]
-  before_action :set_appointment, only: %i[show]
+  before_action :set_appointment, only: %i[show update destroy]
 
   def index
     @appointments = Appointment.all
@@ -14,6 +14,16 @@ class AppointmentsController < ApplicationController
   def create
     @appointment = Appointment.create!(appointment_params)
     json_response(@appointment, :created)
+  end
+
+  def update
+    @appointment.update(appointment_params)
+    head :no_content
+  end
+
+  def destroy
+    @appointment.destroy
+    head :no_content
   end
 
   private

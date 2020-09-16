@@ -85,4 +85,35 @@ RSpec.describe 'Appointments API', type: :request do
       end
     end
   end
+
+  describe 'PUT /appointments/:id' do
+    let(:today) { Date.today }
+    let(:start_date) { DateTime.new(today.year, today.month, today.day, 8) + 1.week }
+    let(:end_date) { start_date + 1.hour }
+    let(:valid_attributes) do
+      {
+        end_date: end_date,
+        reason: 'Dentist Review',
+        start_date: start_date
+      }
+    end
+
+    before { put "/appointments/#{appointment_id}", params: valid_attributes }
+
+    it 'updates the record' do
+      expect(response.body).to be_empty
+    end
+
+    it 'returns http status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
+
+  describe 'DELETE /appointments/:id' do
+    before { delete "/appointments/#{appointment_id}" }
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end
