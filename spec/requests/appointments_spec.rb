@@ -66,7 +66,7 @@ RSpec.describe 'Appointments API', type: :request do
 
   describe 'POST /appointments' do
     context 'when a slot is available' do
-      before do 
+      before do
         post '/appointments', params: appointment_json, headers: headers
       end
 
@@ -96,10 +96,10 @@ RSpec.describe 'Appointments API', type: :request do
   end
 
   describe 'PUT /appointments/:id' do
-    let(:appointment_to_update) {Appointment.create(valid_attributes)}
+    let(:appointment_to_update) { Appointment.create(valid_attributes) }
 
     before do
-      valid_attributes[:reason] = 'Updated dentist review' 
+      valid_attributes[:reason] = 'Updated dentist review'
       put "/appointments/#{appointment_to_update.id}", params: appointment_json, headers: headers
     end
 
@@ -117,7 +117,7 @@ RSpec.describe 'Appointments API', type: :request do
     before { delete "/appointments/#{appointment_id}", params: {}, headers: headers }
 
     it 'removes the appointment' do
-      expect {Appointment.find(appointment_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Appointment.find(appointment_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'returns status code 204' do
