@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  #get '/', action: :index, controller: 'home'
+  post 'auth/login', to: 'authentication#authenticate'
+  post 'signup', to: 'users#create'
   resources :appointments
 end
