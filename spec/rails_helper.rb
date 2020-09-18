@@ -72,7 +72,8 @@ RSpec.configure do |config|
 
   # add factory bot methods
   config.include FactoryBot::Syntax::Methods
-  config.include RequestSpecHelper, type: :request
+  config.include RequestSpecHelper
+  config.include ControllerSpecHelper
 
   # start by truncating all tables
   config.before(:suite) do
