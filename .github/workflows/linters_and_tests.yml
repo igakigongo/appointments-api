@@ -72,8 +72,8 @@ jobs:
 
       - name: Create database
         run: |
-          bundle exec rails db:create RAILS_ENV=test
-          bundle exec rails db:migrate RAILS_ENV=test
+          bundle exec rails db:create --trace RAILS_ENV=test
+          bundle exec rails db:migrate --trace RAILS_ENV=test
 
       - name: Run tests
         run: bin/rspec -f d
