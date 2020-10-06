@@ -22,11 +22,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install gems
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-
       - name: Install Rubocp
         run: gem install rubocop -v 0.91.1
 
