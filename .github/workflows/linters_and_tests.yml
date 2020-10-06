@@ -31,8 +31,7 @@ jobs:
         run: gem install rubocop
 
       - name: Run linters
-        run: |
-          bin/rubocop --parallel
+        run: rubocop --parallel
 
       - name: Run security checks
         run: |
