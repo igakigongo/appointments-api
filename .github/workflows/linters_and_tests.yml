@@ -3,9 +3,6 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 on: [push]
 
-env:
-  APPOINTMENTS_DATABASE_PASSWORD: postgres
-
 jobs:
   linters:
     name: Linters
@@ -48,7 +45,7 @@ jobs:
         ports:
         - 5432:5432
         env:
-          APPOINTMENTS_DATABASE_PASSWORD: ${{ APPOINTMENTS_DATABASE_PASSWORD }}
+          APPOINTMENTS_DATABASE_PASSWORD: postgres
 
     steps:
       - name: Checkout code
