@@ -30,8 +30,9 @@ jobs:
 
       - name: Run security checks
         run: |
-          bin/bundler-audit --update
-          bin/brakeman -q -w2
+          gem install bundler-audit -v 0.7.0.1 
+          bundle-audit check --update
+        # bin/brakeman -q -w2
 
   tests:
     name: Tests
