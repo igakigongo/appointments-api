@@ -36,16 +36,14 @@ jobs:
           brakeman -q -w2
 
   tests:
-    name: Tests
+    name: RSpec Tests
+    needs: linters
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: appointments_test_db
-          POSTGRES_PASSWORD: ""
-        ports: ["5432:5432"]
+        image: postgres:latest
+        ports:
+        - 5432:5432
 
     steps:
       - name: Checkout code
@@ -62,18 +60,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install gems
+      - name: Install postgres client
+        run: sudo apt-get install libpq-dev
+
+      - name: Install dependencies
         run: |
-          bundle config path vendor/bundle
+          gem install bundler
           bundle install --jobs 4 --retry 3
 
-      - name: Setup test database
-        env:
-          RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
+      - name: Create database
         run: |
-          bin/rails db:setup
+          bundler exec rails db:create RAILS_ENV=test
+          bundler exec rails db:migrate RAILS_ENV=test
 
       - name: Run tests
         run: bin/rspec -f d
