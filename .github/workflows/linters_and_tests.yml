@@ -70,10 +70,14 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
 
+      - name: setup databases
+        env:
+          APPOINTMENTS_DATABASE_PASSWORD: postgres
+
       - name: Create database
         run: |
-          bundle exec rails db:create --trace RAILS_ENV=test
-          bundle exec rails db:migrate --trace RAILS_ENV=test
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run tests
         run: bin/rspec -f d
