@@ -1,3 +1,6 @@
+env:
+  APPOINTMENTS_DATABASE_PASSWORD: postgres
+
 name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -44,6 +47,8 @@ jobs:
         image: postgres:latest
         ports:
         - 5432:5432
+        env:
+          APPOINTMENTS_DATABASE_PASSWORD: ${{ APPOINTMENTS_DATABASE_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -70,8 +75,8 @@ jobs:
 
       - name: Create database
         run: |
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run tests
         run: bin/rspec -f d
