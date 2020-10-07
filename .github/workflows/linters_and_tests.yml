@@ -1,0 +1,79 @@
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+on: [push]
+
+jobs:
+  linters:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Ruby gem cache
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Rubocp
+        run: gem install rubocop -v 0.91.1
+
+      - name: Run linters
+        run: rubocop --parallel
+
+      - name: Run security checks
+        run: |
+          gem install bundler-audit -v 0.7.0.1
+          gem install brakeman -v 4.10.0
+          bundle-audit check --update
+          brakeman -q -w2
+
+  tests:
+    name: RSpec Tests
+    needs: linters
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+
+      - name: install dependent libraries => postgres client
+        run: sudo apt-get install libpq-dev
+
+      - name: bundle install
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: setup database
+        run: |
+          cp config/database-github-actions.yml config/database.yml
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+      - name: Run tests
+        run: COVERAGE=true bundle exec rspec -f d
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
