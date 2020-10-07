@@ -7,4 +7,10 @@ class User < ApplicationRecord
 
   # validations
   validates_presence_of :email, :name, :password_digest
+  validates :email,
+            format: {
+              with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i,
+              message: 'is invalid'
+            },
+            uniqueness: { case_sensitive: false }
 end
