@@ -112,16 +112,4 @@ RSpec.describe 'Appointments API', type: :request do
       expect(response).to have_http_status(204)
     end
   end
-
-  describe 'DELETE /appointments/:id' do
-    before { delete "/appointments/#{appointment_id}", params: {}, headers: headers }
-
-    it 'removes the appointment' do
-      expect { Appointment.find(appointment_id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it 'returns status code 204' do
-      expect(response).to have_http_status(204)
-    end
-  end
 end

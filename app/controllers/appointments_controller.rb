@@ -21,11 +21,6 @@ class AppointmentsController < ApplicationController
     head :no_content
   end
 
-  def destroy
-    @appointment.destroy
-    head :no_content
-  end
-
   private
 
   def appointment_params
