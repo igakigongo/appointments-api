@@ -24,7 +24,7 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.permit(:end_date, :reason, :start_date)
+    params.permit(:doctor_id, :end_date, :reason, :start_date)
   end
 
   def check_existence

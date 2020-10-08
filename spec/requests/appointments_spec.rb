@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Appointments API', type: :request do
   # add appointments owner
+  let(:doctor) { create(:doctor) }
   let(:user) { create(:user) }
-  let!(:appointments) { create_list(:appointment, 10, user_id: user.id) }
+  let!(:appointments) { create_list(:appointment, 10, doctor_id: doctor.id, user_id: user.id) }
   let(:appointment_id) { appointments.first.id }
 
   # add valid headers to authorize requests
@@ -15,6 +16,7 @@ RSpec.describe 'Appointments API', type: :request do
   let(:end_date) { start_date + 1.hour }
   let(:valid_attributes) do
     {
+      doctor_id: doctor.id,
       end_date: end_date,
       reason: 'Dentist Review',
       start_date: start_date,
