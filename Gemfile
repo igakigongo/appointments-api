@@ -9,6 +9,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+# install faker in production in order to run seed data using it
+gem 'faker'
+
 # JWT authentications
 gem 'jwt'
 
@@ -41,7 +44,6 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 4.0'
-  gem 'faker'
   gem 'shoulda-matchers', '~> 3.1'
 end
 
